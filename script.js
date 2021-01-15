@@ -101,7 +101,7 @@ function displayCurrent() {
         $('#current-hum').text(getHum);
         $('#current-wind').text(getWind);
         $('#current-uvi').text(getUvi);
-        $('#current-city-icon').attr("src3",getIcon);
+        $('#current-city-icon').attr("src",getIcon);
         console.log(getIcon);
     }
     
@@ -166,7 +166,7 @@ function convertDt(){
 function history() {
     var searchList = $("#search-history");
     var addCity = $('<button>');
-    addCity.attr('class', 'btn btn-light');
+    addCity.attr('class', 'btn text-light bg-dark');
     addCity.text(city);
     searchList.append(addCity);
     

@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="p-5 text-center bg-image mb-5" style="background-image: url('https://images.unsplash.com/photo-1514477917009-389c76a86b68?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1561&q=80');
-      height: 300px;">
+      height: 150px;">
     
       <div class="d-flex justify-content-center align-items-center h-100">
           <h1>Weather Dashboard</h1>
@@ -38,8 +38,7 @@
                 <!-- search history populates here -->
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="btn-group-vertical" id="search-history">
-                        <button type="button" class="btn btn-light">Seattle</button>
-                        <button type="button" class="btn btn-light">Philadelphia</button>
+                        <button type="button" class="btn text-light bg-dark">Seattle</button>
                     </div>
                 </div>
             </div>
@@ -47,9 +46,10 @@
             <div class="col-md-8 main-content">
                 <div class="row mb-3">
                     <div class="card w-100">
-                        <h5 class="card-header" id="current-city-info"><span>
+                        <h5 class="card-header text-light bg-dark">
+                            <span id="current-city-info"></span>
                             <img id="current-city-icon" alt="weather-icon">
-                        </span></h5>
+                        </h5>
                         <div class="card-body">
                             <p class="current-temp">Temperature: <span id="current-temp"></span></p>
                             <p class="current-hum">Humidity: <span id="current-hum"></span></p>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="card w-100">
-                        <h5 class="card-header">5-Day Forecast</h5>
+                        <h5 class="card-header text-light bg-dark">5-Day Forecast</h5>
                         <div class="card-body">
                             <div class="row d-flex justify-content-around">
                                 <div class="card col-md-2 mb-3" id="forecast-card">
