@@ -21,20 +21,22 @@
         <div class="row">
             <div class="col-md-4">
                 <!-- form input -->
-                <div class="form-group">
-                    <label for="city-input d-flex justify-content-start">Search City:</label>
-                    <input type="city-name" class="city-input" id="city-input" placeholder="Enter City...">
-                    <button type="submit" class="btn btn-primary btn-sm">Go</button>
+                <div class="row">
+                    <div class="input-group d-flex justify-content-center">
+                        <input type="city-name" class="city-input" id="city-input" placeholder="Search City...">
+                        <div class="input-group-append"> 
+                            <button type="submit" class="btn btn-primary btn-sm" id="search-btn">Go</button>
+                        </div>
+                    </div>
                 </div>
-                <!-- search history -->
-                <ul class="list-group">
-                    <li class="list-group-item">Seattle</li>
-                    <li class="list-group-item">Beijing</li>
-                    <li class="list-group-item">Tokyo</li>
-                    <li class="list-group-item">Vancouver</li>
-                    <li class="list-group-item">New York</li>
-                </ul>
+                <div class="row d-flex justify-content-center">
+                    <div class="btn-group-vertical btn-block" id="search-history">
+                        <button type="button" class="btn btn-light">Seattle</button>
+                        <button type="button" class="btn btn-light">Philadelphia</button>
+                    </div>
+                </div>
             </div>
+
             <div class="col-md-8">
                 <div class="row">
                     <div class="card w-100">
@@ -47,7 +49,47 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="card w-100">
+                        <h5 class="card-header">5-Day Forecast</h5>
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-around">
+                                <div class="card col-md-2">
+                                    <p class="date-1"></p>
+                                    <i class="icon-1"></i>
+                                    <p class="temp-1">Temperature: </p>
+                                    <p class="humidity-1">Humidity: </p>
+                                </div>
+                                <div class="card col-md-2">
+                                    <p class="date-2"></p>
+                                    <i class="icon-2"></i>
+                                    <p class="temp-2">Temperature: </p>
+                                    <p class="humidity-2">Humidity: </p>
+                                </div>
+                                <div class="card col-md-2">
+                                    <p class="date-3"></p>
+                                    <i class="icon-3"></i>
+                                    <p class="temp-3">Temperature: </p>
+                                    <p class="humidity-3">Humidity: </p>
+                                </div>
+                                <div class="card col-md-2">
+                                    <p class="date-4"></p>
+                                    <i class="icon-4"></i>
+                                    <p class="temp-4">Temperature: </p>
+                                    <p class="humidity-4">Humidity: </p>
+                                </div>
+                                <div class="card col-md-2">
+                                    <p class="date-5"></p>
+                                    <i class="icon-5"></i>
+                                    <p class="temp-5">Temperature: </p>
+                                    <p class="humidity-5">Humidity: </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -55,3 +97,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
