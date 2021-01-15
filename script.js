@@ -71,7 +71,7 @@ function colorUVI() {
     }
 }
 
-// Save current data to local storage and display data 
+// Save current data to local storage 
 function currentData() {
 
     // convert dt
@@ -91,17 +91,43 @@ function currentData() {
     localStorage.setItem("uvi", "UV Index: " + uvi);
     localStorage.setItem("icon", "http://openweathermap.org/img/wn/" + icon + ".png");
 
-    // display data from local storage
-    $('#current-city-info').text(localStorage.getItem("city") + " (" + localStorage.getItem("date") + ")");
-    $('.current-temp').text(localStorage.getItem("temp"));
-    $('.current-hum').text(localStorage.getItem("hum"));
-    $('.current-wind').text(localStorage.getItem("wind"));
-    $('.current-uvi').text(localStorage.getItem("uvi"));
+    displayCurrent()
+}
+
+function displayCurrent() {
+    var getDate = localStorage.getItem("date");
+    var getCity = localStorage.getItem("city");
+    var getTemp = localStorage.getItem("temp");
+    var getHum = localStorage.getItem("hum");
+    var getWind = localStorage.getItem("wind");
+    var getUvi = localStorage.getItem("uvi");
+
+    if (getDate===null) {
+        $('#current-city-info').text("City (Date)");
+        $('.current-temp').text("Temperature: ");
+        $('.current-hum').text("Humidity: ");
+        $('.current-wind').text("Wind speed: ");
+        $('.current-uvi').text("UV Index: ");
+    }
+    else {
+        $('#current-city-info').text(localStorage.getItem("city") + " (" + localStorage.getItem("date") + ")");
+        $('.current-temp').text(localStorage.getItem("temp"));
+        $('.current-hum').text(localStorage.getItem("hum"));
+        $('.current-wind').text(localStorage.getItem("wind"));
+        $('.current-uvi').text(localStorage.getItem("uvi"));
+    }
+
 }
 
 // Save forecast data to local storage and display data 
 function forecastData() {
-
+    for (let i = 0; i < 5; i++) {
+        console.log(forecast[i].dt);
+        console.log(forecast[i].humidity);
+        console.log(forecast[i].temp.min);
+        console.log(forecast[i].temp.max);
+        console.log(forecast[i].weather[0].icon);
+    }
 }
 
 function convertDt(){
@@ -140,3 +166,5 @@ function history() {
 // local storage in appropriate functions instead of creating a whole function to do it
 // create a display data function calling on the local storage stuff
 // create event for search history 
+
+displayCurrent();
