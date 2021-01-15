@@ -8,6 +8,8 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css"/>
     <title>Weather Dashboard</title>
@@ -25,7 +27,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 side-bar">
-                <!-- form input -->
+                <!-- form input for user to search cities here -->
                 <div class="row mb-3">
                     <div class="input-group d-flex justify-content-center">
                         <input type="city-name" class="city-input" id="city-input" placeholder="Search City...">
@@ -35,7 +37,7 @@
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center mb-3">Search History:</div>
-                <!-- search history populates here -->
+                <!-- cities in search history populate here -->
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="btn-group-vertical" id="search-history">
                     </div>
@@ -43,6 +45,7 @@
             </div>
 
             <div class="col-md-8 main-content">
+                <!-- current weather details will populate here -->
                 <div class="row mb-3">
                     <div class="card w-100">
                         <h5 class="card-header text-light bg-dark">
@@ -57,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- five day forecast will populate here -->
                 <div class="row mb-3">
                     <div class="card w-100">
                         <h5 class="card-header text-light bg-dark">5-Day Forecast</h5>

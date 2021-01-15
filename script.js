@@ -1,10 +1,4 @@
-$("#search-btn").on("click", function(event) {
-    event.preventDefault();
-    city = $("#city-input").val().trim();
-    getCoord(city);
-    history(city);
-});
-
+// Get longtitude and latitude coordinates for searched city
 function getCoord() {
     var APIkey = "c19b2f1f085df13be7309df32599c301";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + APIkey;
@@ -21,14 +15,16 @@ function getCoord() {
     });
 }
 
+// Get current and future forecast data from Open Weather API 
 function getData() {
     var APIkey = "c19b2f1f085df13be7309df32599c301";
     var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&units=imperial&appid=" + APIkey;
+
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response);
+        console.log("--------------------");
         console.log("current date is " + response.current.dt);
         console.log("current temperature is " + response.current.temp);
         console.log("current humidity is " + response.current.humidity);
@@ -36,14 +32,6 @@ function getData() {
         console.log("current uv index is " + response.current.uvi);
         console.log("current weather icon is " + response.current.weather[0].icon);
         console.log("--------------------");
-        console.log("5-day forecast:");
-        // for (let i = 1; i < 6; i++) {
-        //     console.log(response.daily[i].dt);
-        //     console.log(response.daily[i].humidity);
-        //     console.log(response.daily[i].temp.min);
-        //     console.log(response.daily[i].temp.max);
-        //     console.log(response.daily[i].weather[0].icon);
-        // }
 
         dt = response.current.dt;
         temp = response.current.temp;
@@ -58,10 +46,10 @@ function getData() {
     }); 
 }
 
-// Save current data to local storage 
+// Save current forecast data to local storage 
 function currentData() {
 
-    // convert dt
+    // convert dt to DD MM YYYY format 
     var a = new Date(dt * 1000);
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var year = a.getFullYear();
@@ -69,7 +57,7 @@ function currentData() {
     var date = a.getDate();
     var time = month + ' ' + date + ' ' + year ;
     
-    // save data to local storage
+    // save to local storage
     localStorage.setItem("city", city);
     localStorage.setItem("date", time);
     localStorage.setItem("temp", temp + " F");
@@ -81,6 +69,7 @@ function currentData() {
     displayCurrent();
 }
 
+// Display current forecast data
 function displayCurrent() {
     var getDate = localStorage.getItem("date");
     var getCity = localStorage.getItem("city");
@@ -102,10 +91,10 @@ function displayCurrent() {
         $('#current-city-icon').attr("src",getIcon);
         console.log(getIcon);
     }
-    
     colorUVI();
 }
 
+// Determine UVI severity and display a color to indicate conditions as "favourable", "moderate", or "severe" 
 function colorUVI() {
     var uvi = localStorage.getItem("uvi");
     var currentUvi = $('#current-uvi');
@@ -127,44 +116,28 @@ function colorUVI() {
     currentUvi.append(indicator);
 }
 
-// Save forecast data to local storage and display data 
+// Save future forecast data to local storage 
 function forecastData() {
-    var forecastDate = [];
-    var forecastMin = [];
-    var forecastMax = [];
-    var forecastIcon = [];
-
     for (let i = 1; i < 6; i++) {
-        
+        // convert dt to DD MM YYYY format 
         var a = new Date(daily[i].dt * 1000);
         var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         var year = a.getFullYear();
         var month = months[a.getMonth()];
         var date = a.getDate();
-        var time = month + ' ' + date + ' ' + year;
-        forecastDate[i] = time;
+        var time = month + ' ' + date + ' ' + year; 
 
-        forecastMin[i] = daily[i].temp.min
-        forecastMax[i] = daily[i].temp.max
-        forecastIcon[i] = "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png";  
-
-        // save
+        // save to local storage
         localStorage.setItem("date-"+i, time);
         localStorage.setItem("high-"+i, daily[i].temp.max);
         localStorage.setItem("low-"+i, daily[i].temp.min);
         localStorage.setItem("humidity-"+i, daily[i].humidity);        
-        localStorage.setItem("icon-"+i, "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png");
-
-        // display
-        // $('.date-'+i).text(time);
-        // $('.high-'+i).text(daily[i].temp.max + "F");
-        // $('.low-'+i).text(daily[i].temp.min + "F");        
-        // $('.humidity-'+i).text(daily[i].humidity);        
-        // $('.icon-'+i).attr("src", "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png");        
+        localStorage.setItem("icon-"+i, "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png");       
     }
     displayForecast();
 }
 
+// Display future forecast data 
 function displayForecast() {
     if (localStorage.getItem("date-1")===null) {
         return;
@@ -186,6 +159,7 @@ function displayForecast() {
     }
 }
 
+// Save previously searched cities
 function history() {
     var searchList = $("#search-history");
     var addCity = $('<button>');
@@ -193,11 +167,19 @@ function history() {
     addCity.attr('id', city);
     addCity.text(city);
     searchList.append(addCity);
-    
-    // add to local storage
-    
-    // click event
 }
+
+// Run functions 
+displayCurrent();
+displayForecast();
+
+// Event listeners 
+$("#search-btn").on("click", function(event) {
+    event.preventDefault();
+    city = $("#city-input").val().trim();
+    getCoord(city);
+    history(city);
+});
 
 $("#search-history").on("click", "button", function(event) {
     event.preventDefault();
@@ -205,6 +187,3 @@ $("#search-history").on("click", "button", function(event) {
     city = $(this).attr('id');
     getCoord(city);
 });
-
-displayCurrent();
-displayForecast();
