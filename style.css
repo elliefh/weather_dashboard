@@ -6,3 +6,6 @@ body {
     background-color: #cae9ff;
 }
 
+#forecast-card-group img {
+    width: 46px;
+}

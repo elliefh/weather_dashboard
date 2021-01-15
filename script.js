@@ -6,7 +6,7 @@ $("#search-btn").on("click", function(event) {
 });
 
 function getCoord() {
-    var APIkey = "";
+    var APIkey = "c19b2f1f085df13be7309df32599c301";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + APIkey;
 
     $.ajax({
@@ -22,7 +22,7 @@ function getCoord() {
 }
 
 function getData() {
-    var APIkey = "";
+    var APIkey = "c19b2f1f085df13be7309df32599c301";
     var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&units=imperial&appid=" + APIkey;
     $.ajax({
         url: queryURL,
@@ -190,21 +190,21 @@ function history() {
     var searchList = $("#search-history");
     var addCity = $('<button>');
     addCity.attr('class', 'btn text-light bg-dark');
+    addCity.attr('id', city);
     addCity.text(city);
     searchList.append(addCity);
     
     // add to local storage
     
+    // click event
 }
 
+$("#search-history").on("click", "button", function(event) {
+    event.preventDefault();
 
-
-
-// WHEN I click on a city in the search history
-// THEN I am again presented with current and future conditions for that city
-
-// create event for search history 
-// fix icon in the forecast... 
+    city = $(this).attr('id');
+    getCoord(city);
+});
 
 displayCurrent();
 displayForecast();
