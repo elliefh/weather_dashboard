@@ -1,3 +1,5 @@
+var forecast = new Array();
+
 $("#search-btn").on("click", function(event) {
     event.preventDefault();
     city = $("#city-input").val().trim();
@@ -6,7 +8,7 @@ $("#search-btn").on("click", function(event) {
 });
 
 function getCoord() {
-    var APIkey = "2442e83d9ff198cddb4f1dc9e1a50bbd";
+    var APIkey = "";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + APIkey;
 
     $.ajax({
@@ -22,7 +24,7 @@ function getCoord() {
 }
 
 function getData() {
-    var APIkey = "2442e83d9ff198cddb4f1dc9e1a50bbd";
+    var APIkey = "";
     var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&units=imperial&appid=" + APIkey;
     $.ajax({
         url: queryURL,
@@ -51,24 +53,11 @@ function getData() {
         wind = response.current.wind_speed;
         uvi = response.current.uvi;
         icon = response.current.weather[0].icon;
-        forecast = response.daily;
-
-        colorUVI(uvi);
+        daily = response.daily;
+        
         currentData(city, dt, temp, hum, wind, uvi, icon);
-        forecastData(forecast);
+        forecastData(daily);
     }); 
-}
-
-function colorUVI() {
-    if (uvi>7) {
-        console.log("Severe");
-    } 
-    else if (uvi<3) {
-        console.log("Favorable");
-    }
-    else {
-        console.log("Moderate");
-    }
 }
 
 // Save current data to local storage 
@@ -85,13 +74,13 @@ function currentData() {
     // save data to local storage
     localStorage.setItem("city", city);
     localStorage.setItem("date", time);
-    localStorage.setItem("temp", "Temperature: " + temp + " F");
-    localStorage.setItem("hum", "Humidity: " + hum + " %");
-    localStorage.setItem("wind", "Wind speed: " + wind + " MPH");
-    localStorage.setItem("uvi", "UV Index: " + uvi);
+    localStorage.setItem("temp", temp + " F");
+    localStorage.setItem("hum", hum + " %");
+    localStorage.setItem("wind", wind + " MPH");
+    localStorage.setItem("uvi", uvi);
     localStorage.setItem("icon", "http://openweathermap.org/img/wn/" + icon + ".png");
 
-    displayCurrent()
+    displayCurrent();
 }
 
 function displayCurrent() {
@@ -101,32 +90,66 @@ function displayCurrent() {
     var getHum = localStorage.getItem("hum");
     var getWind = localStorage.getItem("wind");
     var getUvi = localStorage.getItem("uvi");
+    var getIcon = localStorage.getItem("icon");
 
     if (getDate===null) {
         $('#current-city-info').text("City (Date)");
-        $('.current-temp').text("Temperature: ");
-        $('.current-hum').text("Humidity: ");
-        $('.current-wind').text("Wind speed: ");
-        $('.current-uvi').text("UV Index: ");
     }
     else {
-        $('#current-city-info').text(localStorage.getItem("city") + " (" + localStorage.getItem("date") + ")");
-        $('.current-temp').text(localStorage.getItem("temp"));
-        $('.current-hum').text(localStorage.getItem("hum"));
-        $('.current-wind').text(localStorage.getItem("wind"));
-        $('.current-uvi').text(localStorage.getItem("uvi"));
+        $('#current-city-info').text(getCity + " (" + getDate + ")");
+        $('#current-temp').text(getTemp);
+        $('#current-hum').text(getHum);
+        $('#current-wind').text(getWind);
+        $('#current-uvi').text(getUvi);
+        $('#current-city-icon').attr("src3",getIcon);
+        console.log(getIcon);
     }
+    
+    colorUVI();
 
+}
+
+function colorUVI() {
+    var uvi = localStorage.getItem("uvi");
+    var currentUvi = $('#current-uvi');
+    var indicator = $('<span>');
+    indicator.attr('class','ml-1 p-1')
+
+    if (uvi<3) {
+        indicator.css("background-color", "#caffbf");
+        indicator.text("Favorable");
+    }
+    else if (uvi>6) {
+        indicator.css("background-color", "#ffadad");
+        indicator.text("Severe");
+    }
+    else {
+        indicator.css("background-color", "#fdffb6");
+        indicator.text("Moderate");
+    }
+    currentUvi.append(indicator);
+
+    // var sunIcon = $('<i>');
+    // sunIcon.attr("class", "material-icons");
+    // sunIcon.text("wb_sunny")
+
+    // if (uvi<3) {
+    //     sunIcon.attr("style", "color:green");
+    // }
+    // else if (uvi>6) {
+    //     sunIcon.attr("style", "color:red");
+    // }
+    // else {
+    //     sunIcon.attr("style", "color:yellow");
+    // }
+    // currentUvi.append(sunIcon);
 }
 
 // Save forecast data to local storage and display data 
 function forecastData() {
+    var forecast = [];
     for (let i = 0; i < 5; i++) {
-        console.log(forecast[i].dt);
-        console.log(forecast[i].humidity);
-        console.log(forecast[i].temp.min);
-        console.log(forecast[i].temp.max);
-        console.log(forecast[i].weather[0].icon);
+        forecast[i] = daily[i].dt, daily[i].temp.min, daily[i].temp.max, daily[i].weather[0].icon;        
     }
 }
 
@@ -146,23 +169,23 @@ function history() {
     addCity.attr('class', 'btn btn-light');
     addCity.text(city);
     searchList.append(addCity);
-    // add local storage here too. 
+    
+    // add to local storage
+    
 }
 
-// function saveData() {
-//     localStorage.setItem("date", date);
-//     localStorage.setItem("temp", temp);
-//     localStorage.setItem("hum", hum);
-//     localStorage.setItem("wind", wind);
-//     localStorage.setItem("uvi", uvi);
-//     localStorage.setItem("icon", icon);
-// }
+// GIVEN a weather dashboard with form inputs
+// WHEN I search for a city
+// THEN I am presented with current and future conditions for that city and that city is added to the search history
+// WHEN I view current weather conditions for that city
+// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
 
+// WHEN I view future weather conditions for that city
+// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 // WHEN I open the weather dashboard
-// THEN I am presented with the last searched city forecast -->
-
+// THEN I am presented with the last searched city forecast
 // local storage in appropriate functions instead of creating a whole function to do it
 // create a display data function calling on the local storage stuff
 // create event for search history 

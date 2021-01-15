@@ -7,6 +7,8 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css"/>
     <title>Weather Dashboard</title>
 </head>
@@ -32,6 +34,8 @@
                         </div>
                     </div>
                 </div>
+                <div class="row d-flex justify-content-center mb-3">Search History:</div>
+                <!-- search history populates here -->
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="btn-group-vertical" id="search-history">
                         <button type="button" class="btn btn-light">Seattle</button>
@@ -43,12 +47,14 @@
             <div class="col-md-8 main-content">
                 <div class="row mb-3">
                     <div class="card w-100">
-                        <h5 class="card-header" id="current-city-info"></h5>
+                        <h5 class="card-header" id="current-city-info"><span>
+                            <img id="current-city-icon" alt="weather-icon">
+                        </span></h5>
                         <div class="card-body">
-                            <p class="current-temp">Temperature: </p>
-                            <p class="current-hum">Humidity: </p>
-                            <p class="current-wind">Wind Speed: </p>
-                            <p class="current-uvi">UV Index: </p>
+                            <p class="current-temp">Temperature: <span id="current-temp"></span></p>
+                            <p class="current-hum">Humidity: <span id="current-hum"></span></p>
+                            <p class="current-wind">Wind Speed: <span id="current-wind"></span></p>
+                            <p class="current-uvi">UV Index: <span id="current-uvi"></span></p>
                         </div>
                     </div>
                 </div>
