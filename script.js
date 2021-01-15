@@ -1,5 +1,3 @@
-var forecast = new Array();
-
 $("#search-btn").on("click", function(event) {
     event.preventDefault();
     city = $("#city-input").val().trim();
@@ -69,7 +67,7 @@ function currentData() {
     var year = a.getFullYear();
     var month = months[a.getMonth()];
     var date = a.getDate();
-    var time = date + ' ' + month + ' ' + year ;
+    var time = month + ' ' + date + ' ' + year ;
     
     // save data to local storage
     localStorage.setItem("city", city);
@@ -106,7 +104,6 @@ function displayCurrent() {
     }
     
     colorUVI();
-
 }
 
 function colorUVI() {
@@ -117,7 +114,7 @@ function colorUVI() {
 
     if (uvi<3) {
         indicator.css("background-color", "#caffbf");
-        indicator.text("Favorable");
+        indicator.text("Favourable");
     }
     else if (uvi>6) {
         indicator.css("background-color", "#ffadad");
@@ -128,39 +125,65 @@ function colorUVI() {
         indicator.text("Moderate");
     }
     currentUvi.append(indicator);
-
-    // var sunIcon = $('<i>');
-    // sunIcon.attr("class", "material-icons");
-    // sunIcon.text("wb_sunny")
-
-    // if (uvi<3) {
-    //     sunIcon.attr("style", "color:green");
-    // }
-    // else if (uvi>6) {
-    //     sunIcon.attr("style", "color:red");
-    // }
-    // else {
-    //     sunIcon.attr("style", "color:yellow");
-    // }
-    // currentUvi.append(sunIcon);
 }
 
 // Save forecast data to local storage and display data 
 function forecastData() {
-    var forecast = [];
-    for (let i = 0; i < 5; i++) {
-        forecast[i] = daily[i].dt, daily[i].temp.min, daily[i].temp.max, daily[i].weather[0].icon;        
+    var forecastDate = [];
+    var forecastMin = [];
+    var forecastMax = [];
+    var forecastIcon = [];
+
+    for (let i = 1; i < 6; i++) {
+        
+        var a = new Date(daily[i].dt * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var time = month + ' ' + date + ' ' + year;
+        forecastDate[i] = time;
+
+        forecastMin[i] = daily[i].temp.min
+        forecastMax[i] = daily[i].temp.max
+        forecastIcon[i] = "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png";  
+
+        // save
+        localStorage.setItem("date-"+i, time);
+        localStorage.setItem("high-"+i, daily[i].temp.max);
+        localStorage.setItem("low-"+i, daily[i].temp.min);
+        localStorage.setItem("humidity-"+i, daily[i].humidity);        
+        localStorage.setItem("icon-"+i, "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png");
+
+        // display
+        // $('.date-'+i).text(time);
+        // $('.high-'+i).text(daily[i].temp.max + "F");
+        // $('.low-'+i).text(daily[i].temp.min + "F");        
+        // $('.humidity-'+i).text(daily[i].humidity);        
+        // $('.icon-'+i).attr("src", "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png");        
     }
+    displayForecast();
 }
 
-function convertDt(){
-    var a = new Date(dt * 1000);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var time = date + ' ' + month + ' ' + year ;
-    console.log(time);
+function displayForecast() {
+    if (localStorage.getItem("date-1")===null) {
+        return;
+    }
+    else {
+        for (let i = 1; i < 6; i++) {
+            var getDate = localStorage.getItem("date-"+i);
+            var getHigh = localStorage.getItem("high-"+i);
+            var getLow = localStorage.getItem("low-"+i);
+            var getHum = localStorage.getItem("humidity-"+i);
+            var getIcon = localStorage.getItem("icon-"+i);
+    
+            $('.date-'+i).text(getDate);
+            $('.high-'+i).text(getHigh + "F");
+            $('.low-'+i).text(getLow + "F");        
+            $('.humidity-'+i).text(getHum);        
+            $('.icon-'+i).attr("src", getIcon); 
+        }
+    }
 }
 
 function history() {
@@ -174,20 +197,14 @@ function history() {
     
 }
 
-// GIVEN a weather dashboard with form inputs
-// WHEN I search for a city
-// THEN I am presented with current and future conditions for that city and that city is added to the search history
-// WHEN I view current weather conditions for that city
-// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
 
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
+
+
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
-// WHEN I open the weather dashboard
-// THEN I am presented with the last searched city forecast
-// local storage in appropriate functions instead of creating a whole function to do it
-// create a display data function calling on the local storage stuff
+
 // create event for search history 
+// fix icon in the forecast... 
 
 displayCurrent();
+displayForecast();
