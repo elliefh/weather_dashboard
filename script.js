@@ -6,10 +6,8 @@ $("#search-btn").on("click", function(event) {
 });
 
 function getCoord() {
-    var APIkey = "3be43ec06bda24e29186ff678f3318e6";
+    var APIkey = "2442e83d9ff198cddb4f1dc9e1a50bbd";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + APIkey;
-    // var png = "";
-    // var iconURL = "http://openweathermap.org/img/wn/" + png + ".png";
 
     $.ajax({
         url: queryURL,
@@ -17,35 +15,35 @@ function getCoord() {
     }).then(function(response) {
         lat = response.coord.lat;
         lon = response.coord.lon;
-        console.log("latitude is " + lat + ", and longtitude is " + lon + " for " + city);
+        console.log("For " + city + ", the latitude is " + lat + ", and longtitude is " + lon);
 
-        getData(lat, lon)
+        getData(city, lat, lon)
     });
 }
 
 function getData() {
-    var APIkey = "3be43ec06bda24e29186ff678f3318e6";
+    var APIkey = "2442e83d9ff198cddb4f1dc9e1a50bbd";
     var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&units=imperial&appid=" + APIkey;
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response) {
         console.log(response);
-        console.log("date is " + response.current.dt);
-        console.log("temperature is " + response.current.temp);
-        console.log("humidity is " + response.current.humidity);
-        console.log("wind speed is " + response.current.wind_speed);
-        console.log("uv index is " + response.current.uvi);
-        console.log("weather icon is " + response.current.weather[0].icon);
-        console.log("---------------------------------------------------");
-        console.log("5-day-forecast:");
-        for (let i = 0; i < 5; i++) {
-            console.log(response.daily[i].dt);
-            console.log(response.daily[i].humidity);
-            console.log(response.daily[i].temp.min);
-            console.log(response.daily[i].temp.max);
-            console.log(response.daily[i].weather[0].icon);
-        }
+        console.log("current date is " + response.current.dt);
+        console.log("current temperature is " + response.current.temp);
+        console.log("current humidity is " + response.current.humidity);
+        console.log("current wind speed is " + response.current.wind_speed);
+        console.log("current uv index is " + response.current.uvi);
+        console.log("current weather icon is " + response.current.weather[0].icon);
+        console.log("--------------------");
+        console.log("5-day forecast:");
+        // for (let i = 1; i < 6; i++) {
+        //     console.log(response.daily[i].dt);
+        //     console.log(response.daily[i].humidity);
+        //     console.log(response.daily[i].temp.min);
+        //     console.log(response.daily[i].temp.max);
+        //     console.log(response.daily[i].weather[0].icon);
+        // }
 
         dt = response.current.dt;
         temp = response.current.temp;
@@ -53,10 +51,11 @@ function getData() {
         wind = response.current.wind_speed;
         uvi = response.current.uvi;
         icon = response.current.weather[0].icon;
+        forecast = response.daily;
 
         colorUVI(uvi);
-        convertDt(dt);
-        // saveData();
+        currentData(city, dt, temp, hum, wind, uvi, icon);
+        forecastData(forecast);
     }); 
 }
 
@@ -70,6 +69,39 @@ function colorUVI() {
     else {
         console.log("Moderate");
     }
+}
+
+// Save current data to local storage and display data 
+function currentData() {
+
+    // convert dt
+    var a = new Date(dt * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var time = date + ' ' + month + ' ' + year ;
+    
+    // save data to local storage
+    localStorage.setItem("city", city);
+    localStorage.setItem("date", time);
+    localStorage.setItem("temp", "Temperature: " + temp + " F");
+    localStorage.setItem("hum", "Humidity: " + hum + " %");
+    localStorage.setItem("wind", "Wind speed: " + wind + " MPH");
+    localStorage.setItem("uvi", "UV Index: " + uvi);
+    localStorage.setItem("icon", "http://openweathermap.org/img/wn/" + icon + ".png");
+
+    // display data from local storage
+    $('#current-city-info').text(localStorage.getItem("city") + " (" + localStorage.getItem("date") + ")");
+    $('.current-temp').text(localStorage.getItem("temp"));
+    $('.current-hum').text(localStorage.getItem("hum"));
+    $('.current-wind').text(localStorage.getItem("wind"));
+    $('.current-uvi').text(localStorage.getItem("uvi"));
+}
+
+// Save forecast data to local storage and display data 
+function forecastData() {
+
 }
 
 function convertDt(){
@@ -107,6 +139,4 @@ function history() {
 
 // local storage in appropriate functions instead of creating a whole function to do it
 // create a display data function calling on the local storage stuff
-// change the search history stuff into buttons so it can be clicked and reappear
-// create the cards for 5 day forecast
-// update website aesthetic 
+// create event for search history 
