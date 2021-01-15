@@ -26,11 +26,12 @@ THEN I am presented with the last searched city forecast
 
 ## Project Location
 - Github Repo: https://github.com/elliefh/weather_dashboard
-- Deployed Link: 
+- Deployed Link: https://elliefh.github.io/weather_dashboard/
 
 ## Resources
 - W3 Schools: https://www.w3schools.com/
 - UW Coding Bootcamp: https://bootcamp.uw.edu/
+- Open Weather Map API: https://openweathermap.org
 
 ## License
 
