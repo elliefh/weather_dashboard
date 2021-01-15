@@ -1,8 +1,8 @@
-$(".btn").on("click", function(event) {
+$("#search-btn").on("click", function(event) {
     event.preventDefault();
     city = $("#city-input").val().trim();
-    alert("You typed in " + city);
     getCoord(city);
+    history(city);
 });
 
 function getCoord() {
@@ -82,6 +82,15 @@ function convertDt(){
     console.log(time);
 }
 
+function history() {
+    var searchList = $("#search-history");
+    var addCity = $('<button>');
+    addCity.attr('class', 'btn btn-light');
+    addCity.text(city);
+    searchList.append(addCity);
+    // add local storage here too. 
+}
+
 // function saveData() {
 //     localStorage.setItem("date", date);
 //     localStorage.setItem("temp", temp);
@@ -91,11 +100,13 @@ function convertDt(){
 //     localStorage.setItem("icon", icon);
 // }
 
-
-
-// the date
-
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 // WHEN I open the weather dashboard
 // THEN I am presented with the last searched city forecast -->
+
+// local storage in appropriate functions instead of creating a whole function to do it
+// create a display data function calling on the local storage stuff
+// change the search history stuff into buttons so it can be clicked and reappear
+// create the cards for 5 day forecast
+// update website aesthetic 
